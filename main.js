@@ -6,6 +6,8 @@ const {
     Intents,
     MessageEmbed
 } = require('discord.js');
+const message = require('./events/guild/message');
+const botinfo = require('./commands/info/botinfo');
 const client = new Client({
     disableMentions: 'everyone',
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
@@ -31,6 +33,14 @@ client.on('guildCreate', guild => {
 
 
     guild.owner.send(e)
+})
+client.on('message', message => {
+    if (message.content === "t!membercount" && message.member.id === process.env.BOT_OWNER) { 
+        var interval = setInterval (function () {
+          message.channel.send(`Total members: ${message.guild.memberCount}`)
+        }, 1 * 3600000); 
+      }
+    
 })
 keepAlive();
 client.login(process.env.BOT_TOKEN);
